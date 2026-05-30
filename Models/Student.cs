@@ -7,5 +7,5 @@ public class Student
     public string Faculty { get; set; }
     public int Course { get; set; }
     
-    public int RoomId { get; set; }
+    public int RoomNumber { get; set; }
 }
