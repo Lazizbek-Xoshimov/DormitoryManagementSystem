@@ -59,7 +59,7 @@ public class RoomService : IRoomService
 
         foreach (Room room in rooms)
         {
-            if (room.CurrentStudents == 0)
+            if (room.CurrentStudents < room.Capacity)
                 emptyRooms[indexOfEmptyRoom ++] = room;
         }
 

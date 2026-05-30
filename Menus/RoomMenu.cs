@@ -106,7 +106,7 @@ public class RoomMenu
                 if (room is null)
                     continue;
 
-                Console.WriteLine($"Room number: {room.RoomNumber}");
+                Console.WriteLine($"Room number: {room.RoomNumber} ({room.CurrentStudents}/{room.Capacity})");
             }
         }
     }
