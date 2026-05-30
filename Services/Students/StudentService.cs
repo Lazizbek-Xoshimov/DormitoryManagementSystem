@@ -13,7 +13,6 @@ public class StudentService : IStudentService
         if (indexOfStudent < 10)
         {
             students[indexOfStudent ++] = student;
-            
             return true;
         }
 

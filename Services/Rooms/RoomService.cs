@@ -51,4 +51,18 @@ public class RoomService : IRoomService
 
         return false;
     }
+
+    public Room[] GetEmptyRoom()
+    {
+        Room[] emptyRooms = new Room[rooms.Length];
+        int indexOfEmptyRoom = 0;
+
+        foreach (Room room in rooms)
+        {
+            if (room.CurrentStudents == 0)
+                emptyRooms[indexOfEmptyRoom ++] = room;
+        }
+
+        return emptyRooms;
+    }
 }

@@ -15,6 +15,7 @@ public class RoomMenu
         Console.WriteLine("Welcome to Dormitory Management System");
         Console.WriteLine("1. Putting Student in a room");
         Console.WriteLine("2. View the list of rooms in the dormitory");
+        Console.WriteLine("3. View available rooms");
     }
 
     public void MenuSelection(int option)
@@ -26,6 +27,9 @@ public class RoomMenu
                 break;
             case 2:
                 this.ViewRoomsMenu();
+                break;
+            case 3:
+                this.ViewEmptyRoomsMenu();
                 break;
             default:
                 Console.WriteLine("You have selected the wrong menu.");
@@ -42,6 +46,8 @@ public class RoomMenu
 
         if (room is null)
             Console.WriteLine("No such room number found.");
+        else if (room.CurrentStudents >= room.Capacity)
+            Console.WriteLine($"Room {roomNumber} is full of students.");
         else
         {
             Student student = new Student();
@@ -61,8 +67,6 @@ public class RoomMenu
             student.RoomNumber = roomNumber;
 
             room.CurrentStudents ++;
-            
-
             roomService.ModifyRoom(roomNumber, room);
 
             bool isAdded = studentService.CreateStudent(student);
@@ -84,6 +88,26 @@ public class RoomMenu
             Console.WriteLine($"Room capacity: {room.Capacity}");
             Console.WriteLine($"Number of students in the room: {room.CurrentStudents}");
             Console.WriteLine($"Room floor: {room.Floor}");
+        }
+    }
+
+    public void ViewEmptyRoomsMenu()
+    {
+        Room[] emptyRooms = roomService.GetEmptyRoom();
+
+        if (emptyRooms is null)
+            Console.WriteLine("No vacant rooms available.");
+        else
+        {
+            Console.WriteLine("The vacant rooms are as follows: ");
+
+            foreach (Room room in emptyRooms)
+            {
+                if (room is null)
+                    continue;
+
+                Console.WriteLine($"Room number: {room.RoomNumber}");
+            }
         }
     }
 }
