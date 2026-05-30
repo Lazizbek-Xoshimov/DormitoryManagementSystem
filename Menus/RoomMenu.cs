@@ -13,9 +13,10 @@ public class RoomMenu
     public void BaseMenu()
     {
         Console.WriteLine("Welcome to Dormitory Management System");
-        Console.WriteLine("1. Putting Student in a room");
+        Console.WriteLine("1. Get Student in a room");
         Console.WriteLine("2. View the list of rooms in the dormitory");
         Console.WriteLine("3. View available rooms");
+        Console.WriteLine("4. Delete a student from the dormitory");
     }
 
     public void MenuSelection(int option)
@@ -30,6 +31,9 @@ public class RoomMenu
                 break;
             case 3:
                 this.ViewEmptyRoomsMenu();
+                break;
+            case 4:
+                this.DeleteStudentMenu();
                 break;
             default:
                 Console.WriteLine("You have selected the wrong menu.");
@@ -109,5 +113,18 @@ public class RoomMenu
                 Console.WriteLine($"Room number: {room.RoomNumber} ({room.CurrentStudents}/{room.Capacity})");
             }
         }
+    }
+
+    public void DeleteStudentMenu()
+    {
+        Console.Write("Enter the student ID to be deleted: ");
+        int studentId = int.Parse(Console.ReadLine());
+
+        bool isDeleted = studentService.DeleteStudent(studentId);
+
+        if (isDeleted)
+            Console.WriteLine("Student information deleted.");
+        else
+            Console.WriteLine($"Student with ID {studentId} not found.");
     }
 }

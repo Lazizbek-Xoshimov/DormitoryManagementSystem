@@ -18,4 +18,17 @@ public class StudentService : IStudentService
 
         return false;
     }
+
+    public bool DeleteStudent(int studentId)
+    {
+        if (studentId >= 0 && studentId < indexOfStudent)
+        {
+            students[studentId] = null;
+            Array.Resize(ref students, indexOfStudent);
+
+            return true;
+        }
+
+        return false;
+    }
 }
