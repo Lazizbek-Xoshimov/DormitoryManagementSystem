@@ -32,24 +32,31 @@ public class RoomService : IRoomService
 
     public Room GetRoomByNumber(int roomNumber)
     {
+        Room returnedRoom = new Room();
+
         foreach (Room room in rooms)
         {
             if (room.RoomNumber == roomNumber)
-                return room;
+                returnedRoom = room;
         }
 
-        return null;
+        return returnedRoom;
     }
 
     public bool ModifyRoom(int roomNumber, Room room)
     {
-        if (roomNumber <= indexOfRoom && roomNumber <= 10)
+        bool isModified = false;
+
+        for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[roomNumber] = room;
-            return true;
+            if (rooms[i].RoomNumber == roomNumber)
+            {
+                rooms[i] = room;    
+                isModified = true;
+            }
         }
 
-        return false;
+        return isModified;
     }
 
     public Room[] GetEmptyRoom()
