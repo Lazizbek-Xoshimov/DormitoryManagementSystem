@@ -20,16 +20,22 @@ public class StudentService : IStudentService
 
     public bool DeleteStudents(int roomNumber)
     {
+        bool isDeleted = false;
+
         for (int i = 0; i < students.Length; i ++)
         {
             if (students[i] is null)
                 continue;
-            
-            if (students[i].RoomNumber == roomNumber)
+            else if (students[i].RoomNumber == roomNumber)
+            {
+                students[i].RoomNumber = 0;
                 students[i] = null;
+
+                isDeleted = true;
+            }
         }
 
-        return true;
+        return isDeleted;
     }
 
     public Student[] ViewStudentsInRoom(int roomNumber)
