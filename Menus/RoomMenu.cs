@@ -74,14 +74,19 @@ public class RoomMenu
             student.RoomNumber = roomNumber;
 
             room.CurrentStudents ++;
-            roomService.ModifyRoom(roomNumber, room);
+            bool isModified = roomService.ModifyRoom(roomNumber, room);
 
-            bool isAdded = studentService.CreateStudent(student);
+            if (isModified)
+            {
+                bool isAdded = studentService.CreateStudent(student);
 
-            if (isAdded)
-                Console.WriteLine($"{student.FullName} was placed in room {roomNumber}.");
+                if (isAdded)
+                    Console.WriteLine($"{student.FullName} was placed in room {roomNumber}.");
+                else
+                    Console.WriteLine("Student database is full.");
+            }
             else
-                Console.WriteLine("Student database is full.");
+                Console.WriteLine("No such room available.");
         }
     }
 
@@ -91,7 +96,7 @@ public class RoomMenu
 
         foreach(Room room in rooms)
         {
-            Console.WriteLine($"Room number: {room.RoomNumber}");
+            Console.WriteLine($"Room {room.RoomNumber}");
             Console.WriteLine($"Room capacity: {room.Capacity}");
             Console.WriteLine($"Number of students in the room: {room.CurrentStudents}");
             Console.WriteLine($"Room floor: {room.Floor}");
@@ -125,18 +130,25 @@ public class RoomMenu
 
         Room room = roomService.GetRoomByNumber(roomNumber);
 
-        room.CurrentStudents = 0;
-        bool isThere = roomService.ModifyRoom(roomNumber, room);
-
-        if (isThere)
-        {
-            bool isDeleted = studentService.DeleteStudents(roomNumber);
-            
-            if (isDeleted)
-                Console.WriteLine("The room was successfully vacated.");
-        }
+        if (room is null)
+            Console.WriteLine("No such room available.");
         else
-            Console.WriteLine("You entered a room that does not exist.");
+        {
+            room.CurrentStudents = 0;
+            bool isThere = roomService.ModifyRoom(roomNumber, room);
+
+            if (isThere)
+            {
+                bool isDeleted = studentService.DeleteStudents(roomNumber);
+                
+                if (isDeleted)
+                    Console.WriteLine("The room was successfully vacated.");
+                else
+                    Console.WriteLine($"Room {roomNumber} is empty.");
+            }
+            else
+                Console.WriteLine("No such room available.");
+        }
     }
 
     public void ViewStudentsInRoomMenu()
@@ -146,7 +158,15 @@ public class RoomMenu
 
         Student[] students = studentService.ViewStudentsInRoom(roomNumber);
 
-        if (students is null)
+        bool isEmpty = true;
+
+        foreach (Student student in students)
+        {
+            if (student is not null)
+                isEmpty = false;
+        }
+
+        if (isEmpty)
             Console.WriteLine($"There are no students in room {roomNumber}");
         else
         {
