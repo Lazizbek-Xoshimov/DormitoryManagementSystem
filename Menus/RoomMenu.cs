@@ -11,7 +11,11 @@ public class RoomMenu
 
     public void BaseMenu()
     {
+        Console.Clear();
+        Console.BackgroundColor = ConsoleColor.Cyan;
+        Console.ForegroundColor = ConsoleColor.Black;
         Console.WriteLine("Welcome to Dormitory Management System");
+        Console.ResetColor();
         Console.WriteLine("1. Set Student in a room");
         Console.WriteLine("2. View the list of rooms in the dormitory");
         Console.WriteLine("3. View available rooms");
@@ -39,22 +43,39 @@ public class RoomMenu
                 this.ViewStudentsInRoomMenu();
                 break;
             default:
-                Console.WriteLine("You have selected the wrong menu.");
-                break;
+                {
+                    Console.Clear();
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine("You have selected the wrong menu.");
+                    Console.ResetColor();
+                    break;
+                }
         }
     }
 
     public void PuttingStudentMenu()
     {
+        Console.Clear();
         Console.Write("Enter which room you would like to stay in: ");
         int roomNumber = int.Parse(Console.ReadLine());
 
         Room room = roomService.GetRoomByNumber(roomNumber);
 
         if (room is null)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("No such room number found.");
+            Console.ResetColor();
+        }
         else if (room.CurrentStudents >= room.Capacity)
-            Console.WriteLine($"Room {roomNumber} is full of students.");
+        {
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine($"Oops. Room {roomNumber} is full of students.");
+            Console.ResetColor();
+        }
         else
         {
             Student student = new Student();
@@ -81,12 +102,27 @@ public class RoomMenu
                 bool isAdded = studentService.CreateStudent(student);
 
                 if (isAdded)
+                {
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Black;
                     Console.WriteLine($"{student.FullName} was placed in room {roomNumber}.");
+                    Console.ResetColor();
+                }
                 else
+                {
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Black;
                     Console.WriteLine("Student database is full.");
+                    Console.ResetColor();
+                }
             }
             else
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("No such room available.");
+                Console.ResetColor();
+            }
         }
     }
 
@@ -94,9 +130,13 @@ public class RoomMenu
     {
         Room[] rooms = roomService.GetAllRooms();
 
+        Console.Clear();
         foreach(Room room in rooms)
         {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine($"Room {room.RoomNumber}");
+            Console.ResetColor();
             Console.WriteLine($"Room capacity: {room.Capacity}");
             Console.WriteLine($"Number of students in the room: {room.CurrentStudents}");
             Console.WriteLine($"Room floor: {room.Floor}");
@@ -107,12 +147,17 @@ public class RoomMenu
     {
         Room[] emptyRooms = roomService.GetEmptyRoom();
 
+        Console.Clear();
         if (emptyRooms is null)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("No vacant rooms available.");
+            Console.ResetColor();
+        }
         else
         {
             Console.WriteLine("The vacant rooms are as follows: ");
-
             foreach (Room room in emptyRooms)
             {
                 if (room is null)
@@ -125,13 +170,19 @@ public class RoomMenu
 
     public void DeleteStudentsMenu()
     {
+        Console.Clear();
         Console.Write("Enter the student in which room you want to delete: ");
         int roomNumber = int.Parse(Console.ReadLine());
 
         Room room = roomService.GetRoomByNumber(roomNumber);
 
         if (room is null)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("No such room available.");
+            Console.ResetColor();
+        }
         else
         {
             room.CurrentStudents = 0;
@@ -142,17 +193,33 @@ public class RoomMenu
                 bool isDeleted = studentService.DeleteStudents(roomNumber);
                 
                 if (isDeleted)
+                {
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Black;
                     Console.WriteLine("The room was successfully vacated.");
+                    Console.ResetColor();
+                }
                 else
+                {
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Black;
                     Console.WriteLine($"Room {roomNumber} is empty.");
+                    Console.ResetColor();
+                }
             }
             else
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("No such room available.");
+                Console.ResetColor();
+            }
         }
     }
 
     public void ViewStudentsInRoomMenu()
     {
+        Console.Clear();
         Console.Write("Enter which room you want to see the students in: ");
         int roomNumber = int.Parse(Console.ReadLine());
 
@@ -167,7 +234,12 @@ public class RoomMenu
         }
 
         if (isEmpty)
+        {
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine($"There are no students in room {roomNumber}");
+            Console.ResetColor();
+        }
         else
         {
             Console.WriteLine($"The students in room {roomNumber} are: ");
