@@ -19,9 +19,44 @@ public class RoomService : IRoomService
         new Room
         {
             RoomNumber = 102,
-            Capacity = 3,
+            Capacity = 4,
             CurrentStudents = 0,
             Floor = 1
+        },
+        new Room
+        {
+            RoomNumber = 201,
+            Capacity = 3,
+            CurrentStudents = 0,
+            Floor = 2
+        },
+        new Room
+        {
+            RoomNumber = 202,
+            Capacity = 3,
+            CurrentStudents = 0,
+            Floor = 2
+        },
+        new Room
+        {
+            RoomNumber = 301,
+            Capacity = 2,
+            CurrentStudents = 0,
+            Floor = 3
+        },
+        new Room
+        {
+            RoomNumber = 302,
+            Capacity = 2,
+            CurrentStudents = 0,
+            Floor = 3
+        },
+        new Room
+        {
+            RoomNumber = 303,
+            Capacity = 2,
+            CurrentStudents = 0,
+            Floor = 3
         }
     };
 
