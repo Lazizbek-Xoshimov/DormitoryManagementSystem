@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using DormitoryManagementSystem.Models;
 using DormitoryManagementSystem.Services.Rooms;
 using DormitoryManagementSystem.Services.Students;
@@ -13,10 +12,11 @@ public class RoomMenu
     public void BaseMenu()
     {
         Console.WriteLine("Welcome to Dormitory Management System");
-        Console.WriteLine("1. Get Student in a room");
+        Console.WriteLine("1. Set Student in a room");
         Console.WriteLine("2. View the list of rooms in the dormitory");
         Console.WriteLine("3. View available rooms");
-        Console.WriteLine("4. Delete a student from the dormitory");
+        Console.WriteLine("4. Clearing the room from students");
+        Console.WriteLine("5. See the students in the room");
     }
 
     public void MenuSelection(int option)
@@ -33,7 +33,10 @@ public class RoomMenu
                 this.ViewEmptyRoomsMenu();
                 break;
             case 4:
-                this.DeleteStudentMenu();
+                this.DeleteStudentsMenu();
+                break;
+            case 5:
+                this.ViewStudentsInRoomMenu();
                 break;
             default:
                 Console.WriteLine("You have selected the wrong menu.");
@@ -115,16 +118,46 @@ public class RoomMenu
         }
     }
 
-    public void DeleteStudentMenu()
+    public void DeleteStudentsMenu()
     {
-        Console.Write("Enter the student ID to be deleted: ");
-        int studentId = int.Parse(Console.ReadLine());
+        Console.Write("Enter the student in which room you want to delete: ");
+        int roomNumber = int.Parse(Console.ReadLine());
 
-        bool isDeleted = studentService.DeleteStudent(studentId);
+        Room room = roomService.GetRoomByNumber(roomNumber);
 
-        if (isDeleted)
-            Console.WriteLine("Student information deleted.");
+        room.CurrentStudents = 0;
+        bool isThere = roomService.ModifyRoom(roomNumber, room);
+
+        if (isThere)
+        {
+            bool isDeleted = studentService.DeleteStudents(roomNumber);
+            
+            if (isDeleted)
+                Console.WriteLine("The room was successfully vacated.");
+        }
         else
-            Console.WriteLine($"Student with ID {studentId} not found.");
+            Console.WriteLine("You entered a room that does not exist.");
+    }
+
+    public void ViewStudentsInRoomMenu()
+    {
+        Console.Write("Enter which room you want to see the students in: ");
+        int roomNumber = int.Parse(Console.ReadLine());
+
+        Student[] students = studentService.ViewStudentsInRoom(roomNumber);
+
+        if (students is null)
+            Console.WriteLine($"There are no students in room {roomNumber}");
+        else
+        {
+            Console.WriteLine($"The students in room {roomNumber} are: ");
+            for (int i = 0; i < students.Length; i ++)
+            {
+                if (students[i] is null)
+                    continue;
+
+                Console.WriteLine($"{i + 1}. {students[i].FullName}");
+            }
+        }
     }
 }

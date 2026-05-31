@@ -5,5 +5,6 @@ namespace DormitoryManagementSystem.Services.Students;
 public interface IStudentService
 {
     bool CreateStudent(Student student);
-    bool DeleteStudent(int studentId);
+    Student[] ViewStudentsInRoom(int roomNumber);
+    bool DeleteStudents(int roomNumber);
 }
